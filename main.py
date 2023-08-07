@@ -21,7 +21,7 @@ def change_phone(data):
     new_phone = data[1]
     if name in ADDRESSBOOK:
         ADDRESSBOOK[name] = new_phone
-        return f"Phone number for {name} was change"
+        return f"Phone number for {name} was changed"
     else:
         return f"Contact {name} not found"
 
@@ -49,10 +49,10 @@ def hello_handler(*args):
     return "Hello! How can I help you?"
 
 COMMANDS = {
-    add_contact: ["add", "додай", "+"],
+    add_contact: ["add"],
     change_phone: ["change"],
     phone_handler: ["phone"],
-    show_all_contacts: ["show all", "покажи список"],
+    show_all_contacts: ["show all"],
     exit_handler: ["good bye", "close", "exit"],
     hello_handler: ["hello"]
 }
@@ -60,8 +60,11 @@ COMMANDS = {
 def command_parser(raw_str: str):
     elements = raw_str.split()
     for handler, keywords in COMMANDS.items():
-        if elements[0].lower() in keywords:
-            return handler(elements[1:])
+        for cmd in keywords:
+            if cmd.startswith(elements[0].lower()):
+                if handler == show_all_contacts:
+                    return handler()
+                return handler(elements[1:])
     return "Unknown command"
 
 def main():
