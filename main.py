@@ -4,8 +4,12 @@ def input_error(inner):
     def wrap(*args):
         try:
             return inner(*args)
-        except (IndexError, KeyError, ValueError):
+        except KeyError:
             return "Invalid input. Please try again."
+        except IndexError:
+            return "Please give me a name and phone"
+        except ValueError:
+            return "Value not correct, please try again"
     return wrap
 
 @input_error
